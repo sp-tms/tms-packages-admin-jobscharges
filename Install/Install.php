@@ -1,0 +1,67 @@
+<?php
+
+namespace Apps\Tms\Packages\Jobs\Charges\Install;
+
+use Apps\Tms\Packages\Jobs\Charges\Install\Schema\JobsCharges;
+use System\Base\BasePackage;
+use System\Base\Providers\ModulesServiceProvider\DbInstaller;
+
+class Install extends BasePackage
+{
+    protected $databases;
+
+    protected $dbInstaller;
+
+    public function init()
+    {
+        $this->databases =
+            [
+                'db_table_name'  => [
+                    'schema'        => 'new Enter_Scheme_Class',
+                    'model'         => 'new Enter_Model_Class',
+                    'configParams'  =>
+                        [
+                            'min_index_chars' => 6
+                        ]
+                ],
+            ];
+
+        $this->dbInstaller = new DbInstaller;
+
+        return $this;
+    }
+
+    public function install()
+    {
+        $this->preInstall();
+
+        $this->installDb();
+
+        $this->postInstall();
+
+        return true;
+    }
+
+    protected function preInstall()
+    {
+        return true;
+    }
+
+    protected function installDb()
+    {
+        //Refer to Package installation for Core.
+        return true;
+    }
+
+    protected function postInstall()
+    {
+        return true;
+    }
+
+    public function uninstall()
+    {
+        //Check Relationship
+        //Drop Table(s)
+        return true;
+    }
+}
