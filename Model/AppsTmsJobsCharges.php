@@ -8,7 +8,17 @@ class AppsTmsJobsCharges extends BaseModel
 {
     public $id;
 
-    public $first_name;
+    public $lr_no;
 
-    public $last_name;
+    public $charge_id;
+
+    public $quantity;
+
+    public $quantity_uom_id;
+
+    public $rate;
+
+    public $rate_uom_id;
+
+    public $amount;
 }

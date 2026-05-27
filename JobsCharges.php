@@ -2,11 +2,12 @@
 
 namespace Apps\Tms\Packages\Jobs\Charges;
 
+use Apps\Tms\Packages\Jobs\Charges\Model\AppsTmsJobsCharges;
 use System\Base\BasePackage;
 
 class JobsCharges extends BasePackage
 {
-    //protected $modelToUse = ::class;
+    protected $modelToUse = AppsTmsJobsCharges::class;
 
     protected $packageName = 'jobscharges';
 
@@ -14,58 +15,97 @@ class JobsCharges extends BasePackage
 
     public function init()
     {
-        //Note: If you want to use init function, you need to run parent::init as well.
-        //It is used by the use app database feature of the app.
-        //if you remove the init() function from this class, it is also fine.
         parent::init();
 
         return $this;
     }
 
-    public function getJobsChargesById($id)
+    public function getJobsChargesByLrnoAndChargesId($lrno, $chargeId)
     {
-        $jobscharges = $this->getById($id);
-
-        if ($jobscharges) {
-            //
-            $this->addResponse('Success');
-
-            return;
+        if ($this->config->databasetype === 'db') {
+            $params =
+                [
+                    'conditions'    => 'lr_no = :lr_no: AND charge_id = :charge_id:',
+                    'bind'          =>
+                        [
+                            'lr_no'          => $lrno,
+                            'charge_id'      => $chargeId,
+                        ]
+                ];
+        } else {
+            $params = ['conditions' => [['lr_no', '=', $lrno], ['charge_id', '=', $chargeId]]];
         }
 
-        $this->addResponse('Error', 1);
+        $chargeArr = $this->getByParams($params);
+
+        if ($chargeArr && count($chargeArr) > 0) {
+            return $chargeArr[0];
+        }
+
+        return false;
     }
 
-    public function addJobsCharges($data)
+    public function getJobsChargesById($id)
     {
         //
     }
 
-    public function updateJobsCharges($data)
+    public function addJobsCharge($data)
     {
-        $jobscharges = $this->getById($id);
+        if ($this->add($data)) {
+            $newCharge = $this->packagesData->last;
 
-        if ($jobscharges) {
-            //
-            $this->addResponse('Success');
+            $this->addResponse('Charge added!', 0, ['newCharge' => $newCharge]);
 
-            return;
+            return false;
         }
 
-        $this->addResponse('Error', 1);
+        $this->addResponse('Unable to add charge', 1);
+
+        return false;
     }
 
-    public function removeJobsCharges($data)
+    public function updateJobsCharge($data)
     {
-        $jobscharges = $this->getById($id);
+        $charge = $this->getById((int) $data['id']);
 
-        if ($jobscharges) {
-            //
-            $this->addResponse('Success');
+        if (!$charge) {
+            $this->addResponse('Charge with ID not found!', 1);
 
-            return;
+            return false;
         }
 
-        $this->addResponse('Error', 1);
+        if ($this->update($data)) {
+            $updatedCharge = $this->packagesData->last;
+
+            $this->addResponse('Charge updated!', 0, ['updatedCharge' => $updatedCharge]);
+
+            return false;
+        }
+
+        $this->addResponse('Unable to update charge', 1);
+
+        return false;
+    }
+
+    public function removeJobsCharge($data)
+    {
+        $charge = $this->getById((int) $data['id']);
+
+        if (!$charge) {
+            $this->addResponse('Charge with ID not found!', 1);
+
+            return false;
+        }
+
+        if ($this->remove((int) $data['id'])) {
+            $this->addResponse('Charge removed!');
+
+            return false;
+        }
+
+        $this->addResponse('Unable to remove charge', 1);
+
+        return false;
     }
 }

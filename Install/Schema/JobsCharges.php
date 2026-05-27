@@ -22,19 +22,52 @@ class JobsCharges
                     ]
                 ),
                 new Column(
-                    'first_name',
+                    'lr_no',
                     [
-                        'type'          => Column::TYPE_VARCHAR,
-                        'size'          => 50,
+                        'type'          => Column::TYPE_INTEGER,
                         'notNull'       => true,
                     ]
                 ),
                 new Column(
-                    'last_name',
+                    'charge_id',
                     [
-                        'type'          => Column::TYPE_VARCHAR,
-                        'size'          => 50,
+                        'type'          => Column::TYPE_TINYINTEGER,
                         'notNull'       => true,
+                    ]
+                ),
+                new Column(
+                    'quantity',
+                    [
+                        'type'          => Column::TYPE_FLOAT,
+                        'notNull'       => false,
+                    ]
+                ),
+                new Column(
+                    'quantity_uom_id',
+                    [
+                        'type'          => Column::TYPE_TINYINTEGER,
+                        'notNull'       => false,
+                    ]
+                ),
+                new Column(
+                    'rate',
+                    [
+                        'type'          => Column::TYPE_FLOAT,
+                        'notNull'       => false,
+                    ]
+                ),
+                new Column(
+                    'rate_uom_id',
+                    [
+                        'type'          => Column::TYPE_TINYINTEGER,
+                        'notNull'       => false,
+                    ]
+                ),
+                new Column(
+                    'amount',
+                    [
+                        'type'          => Column::TYPE_FLOAT,
+                        'notNull'       => false,
                     ]
                 )
             ],
@@ -42,7 +75,8 @@ class JobsCharges
                 new Index(
                     'column_UNIQUE',
                     [
-                        'last_name'
+                        'charge_id',
+                        'lr_no'
                     ],
                     'UNIQUE'
                 )
@@ -60,7 +94,8 @@ class JobsCharges
             new Index(
                 'column_INDEX',
                 [
-                    'first_name'
+                    'charge_id',
+                    'lr_no'
                 ],
                 'INDEX'
             )
