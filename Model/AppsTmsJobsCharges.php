@@ -21,4 +21,6 @@ class AppsTmsJobsCharges extends BaseModel
     public $rate_uom_id;
 
     public $amount;
+
+    public $visibility;
 }

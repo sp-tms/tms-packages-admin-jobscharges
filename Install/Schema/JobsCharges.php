@@ -69,6 +69,13 @@ class JobsCharges
                         'type'          => Column::TYPE_FLOAT,
                         'notNull'       => false,
                     ]
+                ),
+                new Column(//1 - visible on LR, 2 - visible on Invoice, 3 - Visible on both
+                    'visibility',
+                    [
+                        'type'          => Column::TYPE_TINYINTEGER,
+                        'notNull'       => false,
+                    ]
                 )
             ],
             'indexes' => [
