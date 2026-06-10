@@ -22,7 +22,7 @@ class JobsCharges
                     ]
                 ),
                 new Column(
-                    'lr_id',
+                    'lr_no',
                     [
                         'type'          => Column::TYPE_INTEGER,
                         'notNull'       => true,
